@@ -23,16 +23,14 @@ def print_header
 end
 
 def print (students)
-  puts "To view students whose name begins with a specific letter, please enter a letter: "
-  letter = gets.chomp
-  selected_students = 0
-  students.each_with_index do |student|
-        if student[:name][0] == letter
-        puts "#{student[:name]} (#{student[:cohort]} cohort)"
-        selected_students += 1
+  students.each do |student|
+    idx = 1
+        if student[:name].length < 12
+          puts "#{idx}. #{student[:name]} (#{student[:cohort]} cohort)"
+          idx += 1
         end
      end
-  puts "We have #{selected_students} students whose name begins with #{letter}" 
+  puts "These are the students whose name is shorter than 12 characters." 
 end
 
 def print_footer (students)
@@ -42,5 +40,5 @@ end
 students = input_students
 print_header
 print(students)
-print_footer(students)
+#print_footer(students)
 
