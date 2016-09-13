@@ -19,7 +19,11 @@ def input_students
       skill.empty? ? skill = "Coding" : skill
     # add the student hash to the array
       students << {name: name, cohort: cohort, country: country, skill: skill}
-      puts "Now we have #{students.count} students"
+      if students.count == 1
+        puts "Now we have #{students.count} student"
+      else
+        puts "Now we have #{students.count} students"
+      end
       puts "Please add new student information or return to finish"
       puts "Name: "
       name = gets.chomp
@@ -65,10 +69,10 @@ def print_by_cohort (students)
         puts "#{student[:name]}"
       end
     end
-  
 end
   
 def print (students)
+  idx = 0
   while idx < students.length
     puts "#{idx+1}. Name: #{students[idx][:name]}"
     puts "\s\s Cohort: #{students[idx][:cohort]}"
@@ -79,10 +83,15 @@ def print (students)
 end
 
 def print_footer (students)
-  puts "Overall, we have #{students.count} great students"
+  if students.count == 1
+    puts "Currently, we have 1 great student."
+  else
+    puts "Overall, we have #{students.count} great students."
+  end
 end
 
 students = input_students
 print_header
-print_by_cohort(students)
-#print_footer(students)
+print(students)
+#print_by_cohort(students)
+print_footer(students)
