@@ -2,7 +2,9 @@ def input_students
 
   puts "Please enter the information of the student:"
   puts "Name: "
-  name = gets.chomp
+  name = gets
+  # another way to remove new line without using chomp 
+  name.gsub!("\n", "")
 
   students = []
 
@@ -57,12 +59,12 @@ def print_by_cohort (students)
     existing_cohorts << student[:cohort]
   end
   existing_cohorts.uniq!
-  
-  puts "The current cohorts are:" 
+
+  puts "The current cohorts are:"
   existing_cohorts.each {|i| puts i.id2name}
   puts "To view a list of students in a particular cohort, please specify the cohort: "
   cohort_choice = gets.chomp.to_sym
-  
+
   # selecting students from a chosen cohort
     students.map do |student|
       if student[:cohort] == cohort_choice
@@ -70,7 +72,7 @@ def print_by_cohort (students)
       end
     end
 end
-  
+
 def print (students)
   idx = 0
   while idx < students.length
