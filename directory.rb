@@ -1,5 +1,5 @@
 def input_students
-  puts "Please enter the names of the students"
+  puts "Please eneter the names of the students"
   puts "To finish, just hit return twice"
   # create an empty array
   students = []
@@ -18,19 +18,16 @@ def input_students
 end
 
 def print_header  
-  puts "The students of Villian Academy"
+  puts "The students of Unreal Academy"
   puts "-------------"
 end
 
 def print (students)
-  students.each do |student|
-    idx = 1
-        if student[:name].length < 12
-          puts "#{idx}. #{student[:name]} (#{student[:cohort]} cohort)"
-          idx += 1
-        end
-     end
-  puts "These are the students whose name is shorter than 12 characters." 
+  idx = 0
+  while idx < students.length
+    puts "#{idx+1}. #{students[idx][:name]} (#{students[idx][:cohort]} cohort)"
+    idx += 1
+  end
 end
 
 def print_footer (students)
@@ -40,5 +37,4 @@ end
 students = input_students
 print_header
 print(students)
-#print_footer(students)
-
+print_footer(students)
