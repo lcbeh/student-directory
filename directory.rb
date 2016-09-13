@@ -1,13 +1,13 @@
 def input_students
-  
+
   puts "Please enter the information of the student:"
   puts "Name: "
   name = gets.chomp
-  
+
   students = []
-  
+
   # while the name is not empty, repeat this code
-  while !name.empty? 
+  while !name.empty?
       puts "Cohort: "
       cohort = gets.chomp.capitalize.to_sym
       cohort.empty? ? cohort = :November : cohort
@@ -22,13 +22,13 @@ def input_students
       puts "Now we have #{students.count} students"
       puts "Please add new student information or return to finish"
       puts "Name: "
-      name = gets.chomp 
+      name = gets.chomp
   end
   # return the array of students
   students
 end
 
-def print_header 
+def print_header
   title = "The students of Unreal Academy"
   line = "-------------------------------------------------"
   puts title.center(50)
@@ -38,9 +38,41 @@ end
 def print (students)
   idx = 0
   while idx < students.length
-    puts "#{idx+1}. Name: #{students[idx][:name]}" 
+    puts "#{idx+1}. Name: #{students[idx][:name]}"
     puts "\s\s Cohort: #{students[idx][:cohort]}"
-    puts "\s\s Country: #{students[idx][:country]}"  
+    puts "\s\s Country: #{students[idx][:country]}"
+    puts "\s\s Best skill: #{students[idx][:skill]}"
+    idx += 1
+  end
+end
+
+def print_by_cohort (students)
+  # optional step: creating a list of existing cohorts
+  existing_cohorts = []
+  students.map do |student|
+    existing_cohorts << student[:cohort]
+  end
+  existing_cohorts.uniq!
+  
+  puts "The current cohorts are:" 
+  existing_cohorts.each {|i| puts i.id2name}
+  puts "To view a list of students in a particular cohort, please specify the cohort: "
+  cohort_choice = gets.chomp.to_sym
+  
+  # selecting students from a chosen cohort
+    students.map do |student|
+      if student[:cohort] == cohort_choice
+        puts "#{student[:name]}"
+      end
+    end
+  
+end
+  
+def print (students)
+  while idx < students.length
+    puts "#{idx+1}. Name: #{students[idx][:name]}"
+    puts "\s\s Cohort: #{students[idx][:cohort]}"
+    puts "\s\s Country: #{students[idx][:country]}"
     puts "\s\s Best skill: #{students[idx][:skill]}"
     idx += 1
   end
@@ -52,5 +84,5 @@ end
 
 students = input_students
 print_header
-print(students)
-print_footer(students)
+print_by_cohort(students)
+#print_footer(students)
