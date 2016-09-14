@@ -3,7 +3,7 @@
 def interactive_menu
   loop do
     print_menu
-    process(gets.chomp)
+    process(STDIN.gets.chomp)
   end
 end
 
@@ -41,21 +41,23 @@ end
 def input_students
   puts "Please enter the information of the student:"
   puts "Name: "
-  name = gets.chomp
+  name = STDIN.gets.chomp
 
   # while the name is not empty, repeat this code
   while !name.empty?
       puts "Cohort: "
-      cohort = gets.chomp.capitalize.to_sym
+      cohort = STDIN.gets.chomp.capitalize.to_sym
       cohort.empty? ? cohort = :November : cohort
       puts "Country of birth: "
-      country = gets.chomp
+      country = STDIN.gets.chomp
       country.empty? ? country = "UK" : country
       puts "Best skill: "
-      skill = gets.chomp
+      skill = STDIN.gets.chomp
       skill.empty? ? skill = "Coding" : skill
     # add the student hash to the array
       @students << {name: name, cohort: cohort, country: country, skill: skill}
+      # discard any repetitive student data
+      @students.uniq!  
       if @students.count == 1
         puts "Now we have #{@students.count} student"
       else
@@ -63,7 +65,7 @@ def input_students
       end
       puts "Please add new student information or return to finish"
       puts "Name: "
-      name = gets.chomp
+      name = STDIN.gets.chomp
   end
 end
 
@@ -82,15 +84,26 @@ def save_students
     puts "Data saved."
 end
 
-def load_students
-  # open file
-  # print file by line and push into array
-  # convert array into hash(@students)
-  # close file
-  file = File.open("students.csv", "r")
+
+# create a method which can load file is argument is given in command line
+def try_load_students(filename = "students.csv")
+  # check if argument is given
+  # if so, does the file exist? pass it as argument
+  # if such file doesn't exist, let the user know.
+  filename = ARGV.first
+  return if filename.nil?   # leave this method if filename not provided
+  if File.exists?(filename)
+    load_students(filename)
+  else
+    puts "Sorry, #{filename} doesn't exist."
+  end
+end
+
+# create a method which can load any file
+def load_students (filename = "students.csv")   # students.csv as default argument
+  file = File.open(filename, "r")
   file.readlines.each do |line|
-    student_data =  line.chomp.split(",")
-    name, cohort, country, skill = student_data
+    name, cohort, country, skill = line.chomp.split(",")
     @students << {name: name, cohort: cohort.to_sym, country: country, skill: skill}
   end
   file.close
@@ -127,7 +140,7 @@ def print_by_cohort
   puts "The current cohorts are:"
   existing_cohorts.each {|i| puts i.id2name}
   puts "To view a list of students in a particular cohort, please specify the cohort: "
-  cohort_choice = gets.chomp.to_sym
+  cohort_choice = STDIN.gets.chomp.to_sym
 
   # selecting students from a chosen cohort
   @students.map do |student|
@@ -162,4 +175,5 @@ def print_footer
   end
 end
 
+try_load_students
 interactive_menu
