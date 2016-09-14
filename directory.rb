@@ -11,6 +11,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save students to database"
+  puts "4. Load students database"
   puts "9. Exit"
 end
 
@@ -22,6 +23,8 @@ def process(selection)
     show_students
   when "3"
     save_students
+  when "4"
+    load_students
   when "9"
     exit
   else
@@ -58,7 +61,7 @@ def input_students
       else
         puts "Now we have #{@students.count} students"
       end
-      puts "Please add new student information or return to menu"
+      puts "Please add new student information or return to finish"
       puts "Name: "
       name = gets.chomp
   end
@@ -77,6 +80,21 @@ def save_students
   end
     file.close
     puts "Data saved."
+end
+
+def load_students
+  # open file
+  # print file by line and push into array
+  # convert array into hash(@students)
+  # close file
+  file = File.open("students.csv", "r")
+  file.readlines.each do |line|
+    student_data =  line.chomp.split(",")
+    name, cohort, country, skill = student_data
+    @students << {name: name, cohort: cohort.to_sym, country: country, skill: skill}
+  end
+  file.close
+  puts "Database loaded."
 end
 
 def print_header
