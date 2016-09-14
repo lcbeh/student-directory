@@ -1,9 +1,36 @@
+def interactive_menu
+  students = []
+  loop do
+    # 1. print the menu ad ask the user what to do
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+    # 2. read the input and save it into a variable
+    selection = gets. chomp
+    # 3. do what the user has asked
+    case selection
+    when "1"
+      students = input_students
+    when "2"
+      print_header
+      print(students)
+      print_footer(students)
+    when "9"
+      exit
+    else
+      puts "I don't know what you meant, try again"
+    end
+  end
+end
+
+
+
 def input_students
 
   puts "Please enter the information of the student:"
   puts "Name: "
   name = gets
-  # another way to remove new line without using chomp 
+  # another way to remove new line without using chomp
   name.gsub!("\n", "")
 
   students = []
@@ -42,14 +69,15 @@ def print_header
 end
 
 def print (students)
-  idx = 0
-  while idx < students.length
-    puts "#{idx+1}. Name: #{students[idx][:name]}"
-    puts "\s\s Cohort: #{students[idx][:cohort]}"
-    puts "\s\s Country: #{students[idx][:country]}"
-    puts "\s\s Best skill: #{students[idx][:skill]}"
-    idx += 1
-  end
+    p students
+    idx = 0
+    while idx < students.length
+      puts "#{idx+1}. Name: #{students[idx][:name]}"
+      puts "\s\s Cohort: #{students[idx][:cohort]}"
+      puts "\s\s Country: #{students[idx][:country]}"
+      puts "\s\s Best skill: #{students[idx][:skill]}"
+      idx += 1
+    end
 end
 
 def print_by_cohort (students)
@@ -74,26 +102,28 @@ def print_by_cohort (students)
 end
 
 def print (students)
-  idx = 0
-  while idx < students.length
-    puts "#{idx+1}. Name: #{students[idx][:name]}"
-    puts "\s\s Cohort: #{students[idx][:cohort]}"
-    puts "\s\s Country: #{students[idx][:country]}"
-    puts "\s\s Best skill: #{students[idx][:skill]}"
-    idx += 1
+  if students.count < 1
+    puts "There is no student currently."
+  else
+    idx = 0
+    while idx < students.count
+      puts "#{idx+1}. Name: #{students[idx][:name]}"
+      puts "\s\s Cohort: #{students[idx][:cohort]}"
+      puts "\s\s Country: #{students[idx][:country]}"
+      puts "\s\s Best skill: #{students[idx][:skill]}"
+      idx += 1
+    end
   end
 end
 
 def print_footer (students)
-  if students.count == 1
+  if students.count == 0
+    return
+  elsif students.count == 1
     puts "Currently, we have 1 great student."
   else
     puts "Overall, we have #{students.count} great students."
   end
 end
 
-students = input_students
-print_header
-print(students)
-#print_by_cohort(students)
-print_footer(students)
+interactive_menu
