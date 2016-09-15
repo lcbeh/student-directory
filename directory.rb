@@ -103,27 +103,26 @@ def print_footer
   end
 end
 
+require "csv"
+
 def save_students
   puts "Which database file would you like to save the information to? Return for default students database (students.csv)"
   filename = choose_file
-  File.open(filename, "w") do |file|
+  CSV.open(filename, "wb") do |row|
     @students.each do |student|
-      student_data = [student[:name], student[:cohort], student[:country], student[:skill]]
-      csv_line = student_data.join(",")
-      file.puts csv_line
-    end
+      row << [student[:name], student[:cohort], student[:country], student[:skill]]
+    end 
   end
   puts "Data saved."
 end
 
-def load_students 
+
+def load_students
   puts "Which database file would you like to load? Return for default students database (students.csv)"
   filename = choose_file
-  File.open(filename, "r") do |file|
-    while line = file.gets
-      name, cohort, country, skill = line.chomp.split(",")
-      store_students(name, cohort, country, skill)
-    end
+  CSV.foreach(filename) do |line|
+    name, cohort, country, skill = line
+    store_students(name, cohort, country, skill)
   end
   puts "#{filename} loaded."
 end
