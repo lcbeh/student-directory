@@ -11,7 +11,7 @@ def print_menu
   puts "1. Input the students"
   puts "2. Show the students"
   puts "3. Save students to database"
-  # puts "4. Load students database"
+  puts "4. Load students database"
   puts "9. Exit"
 end
 
@@ -23,9 +23,8 @@ def process(selection)
     show_students
   when "3"
     save_students
-  # function removed. Database is loaded automatically at start
-  # when "4"
-  # load_students
+  when "4"
+    load_students
   when "9"
     puts "Goodbye!"
     exit
@@ -50,7 +49,6 @@ def input_students
       puts "Best skill: "
       skill = STDIN.gets.chomp
       skill.empty? ? skill = "Coding" : skill
-      # store students only if information is new
       store_students(name, cohort, country, skill)
       if @students.count == 1
         puts "Now we have #{@students.count} student"
@@ -106,13 +104,8 @@ def print_footer
 end
 
 def save_students
-  # find the correct database file to save data 
-  # open file
-  # convert hashes into array and into csv format
-  # write file
-  # close file
-  filename = ARGV.first
-  filename.nil? ? filename = "students.csv" : filename
+  puts "Which database file would you like to save the information to? Return for default students database (students.csv)"
+  filename = choose_file
   file = File.open(filename,"w")
   @students.each do |student|
     student_data = [student[:name], student[:cohort], student[:country], student[:skill]]
@@ -123,31 +116,30 @@ def save_students
     puts "Data saved."
 end
 
-# create a method which can load any file
-def load_students (filename = "students.csv")   # students.csv as default argument
+
+def choose_file
+  filename = STDIN.gets.chomp
+  filename.empty? ? filename = "students.csv" : filename = filename
+  if File.exists?(filename) == false 
+    puts "Sorry, #{filename} doesn't exist."
+    interactive_menu
+  end
+  filename
+end
+
+
+def load_students 
+  puts "Which database file would you like to load? Return for default students database (students.csv)"
+  filename = choose_file
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, country, skill = line.chomp.split(",")
     store_students(name, cohort, country, skill)
   end
   file.close
-  puts "Database loaded."
+  puts "#{filename} loaded."
 end
 
-# create a method which can load file if argument is given in command line
-def try_load_students
-  # check if argument is given
-  # if so, does the file exist? pass it as argument
-  # if such file doesn't exist, let the user know.
-  filename = ARGV.first
-  if filename.nil?
-    load_students
-  elsif File.exists?(filename)
-    load_students(filename)
-  else
-    puts "Sorry, #{filename} doesn't exist."
-  end
-end
+# omit try_load_students for exercise 14.5
 
-try_load_students
 interactive_menu
