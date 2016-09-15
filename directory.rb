@@ -106,16 +106,27 @@ end
 def save_students
   puts "Which database file would you like to save the information to? Return for default students database (students.csv)"
   filename = choose_file
-  file = File.open(filename,"w")
-  @students.each do |student|
-    student_data = [student[:name], student[:cohort], student[:country], student[:skill]]
-    csv_line = student_data.join(",")
-    file.puts csv_line
+  File.open(filename, "w") do |file|
+    @students.each do |student|
+      student_data = [student[:name], student[:cohort], student[:country], student[:skill]]
+      csv_line = student_data.join(",")
+      file.puts csv_line
+    end
   end
-    file.close
-    puts "Data saved."
+  puts "Data saved."
 end
 
+def load_students 
+  puts "Which database file would you like to load? Return for default students database (students.csv)"
+  filename = choose_file
+  File.open(filename, "r") do |file|
+    while line = file.gets
+      name, cohort, country, skill = line.chomp.split(",")
+      store_students(name, cohort, country, skill)
+    end
+  end
+  puts "#{filename} loaded."
+end
 
 def choose_file
   filename = STDIN.gets.chomp
@@ -125,19 +136,6 @@ def choose_file
     interactive_menu
   end
   filename
-end
-
-
-def load_students 
-  puts "Which database file would you like to load? Return for default students database (students.csv)"
-  filename = choose_file
-  file = File.open(filename, "r")
-  file.readlines.each do |line|
-    name, cohort, country, skill = line.chomp.split(",")
-    store_students(name, cohort, country, skill)
-  end
-  file.close
-  puts "#{filename} loaded."
 end
 
 # omit try_load_students for exercise 14.5
