@@ -89,13 +89,14 @@ end
 
 
 # create a method which can load file is argument is given in command line
-def try_load_students(filename = "students.csv")
+def try_load_students
   # check if argument is given
   # if so, does the file exist? pass it as argument
   # if such file doesn't exist, let the user know.
   filename = ARGV.first
-  return if filename.nil?   # leave this method if filename not provided
-  if File.exists?(filename)
+  if filename.nil?
+    load_students 
+  elsif File.exists?(filename)
     load_students(filename)
   else
     puts "Sorry, #{filename} doesn't exist."
