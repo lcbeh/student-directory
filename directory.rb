@@ -54,8 +54,7 @@ def input_students
       puts "Best skill: "
       skill = STDIN.gets.chomp
       skill.empty? ? skill = "Coding" : skill
-    # add the student hash to the array
-      @students << {name: name, cohort: cohort, country: country, skill: skill}
+      store_students(name, cohort, country, skill)
       # discard any repetitive student data
       @students.uniq!  
       if @students.count == 1
@@ -67,6 +66,10 @@ def input_students
       puts "Name: "
       name = STDIN.gets.chomp
   end
+end
+
+def store_students(name, cohort, country, skill)
+  @students << {name: name, cohort: cohort, country: country, skill: skill}
 end
 
 def save_students
@@ -104,7 +107,7 @@ def load_students (filename = "students.csv")   # students.csv as default argume
   file = File.open(filename, "r")
   file.readlines.each do |line|
     name, cohort, country, skill = line.chomp.split(",")
-    @students << {name: name, cohort: cohort.to_sym, country: country, skill: skill}
+    store_students(name, cohort, country, skill)
   end
   file.close
   puts "Database loaded."
